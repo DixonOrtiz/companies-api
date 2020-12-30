@@ -1,7 +1,15 @@
-### Install Dependencies
+# Companies API
 
-`npm install`
+## Steps to run
 
-### Run in specified port
+### Clone Repository
 
-`npm start`
+`git clone https://github.com/DixonOrtiz/companies-api`
+
+### Build the docker images
+
+`sudo docker-compose build`
+
+### Run the container
+
+`sudo docker-compose up`
