@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  app:
+    container_name: companies-app
+    environment:
+      - PORT=3000
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - DB_NAME=companies-db
+      - JWT_SECRET=secret
+    restart: always
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo-database
+    image: mongo
+    ports:
+      - "27017:27017"
