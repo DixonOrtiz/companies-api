@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "a545b73d-df46-4a6b-a095-f68a8ceb9b80",
+		"name": "Companies Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "/auth/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dixon Ortiz\",\r\n    \"email\": \"dixon.ortizc@gmail.com\",\r\n    \"password\": \"qwertyuiop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1f845491-c0e9-4f84-a37f-91963b44c0d9",
+								"exec": [
+									"var authToken = pm.response.headers.get('auth-token');\r",
+									"pm.environment.set('auth-token', authToken)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dixon.ortizc@gmail.com\",\r\n    \"password\": \"qwertyuiop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "company",
+			"item": [
+				{
+					"name": "/company/createCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "49030392-f9d2-40b3-a0ae-392013a03725",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"company-id\", JSON.stringify(jsonData.company._id));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{auth-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"flamedev\",\r\n    \"address\": \"huilliches 723 Quilicura\",\r\n    \"email\": \"comercial@flamedev.cl\",\r\n    \"phone\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/company/createCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"createCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/company/getCompanyById",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "49fb6bca-2cd8-434e-b0de-cb229159bdae",
+								"exec": [
+									"var companyId = pm.environment.get(\"company-id\");\r",
+									"\r",
+									"if(!companyId) {\r",
+									"    postman.setEnvironmentVariable(\"company-id\", JSON.stringify(\"\"));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{auth-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": {{company-id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/company/getCompanyById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"getCompanyById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/company/getAllCompanies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{auth-token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/company/getAllCompanies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"getAllCompanies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/company/updateCompany",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "929e1696-b9cc-478a-9697-9f78a363d7f4",
+								"exec": [
+									"var companyId = pm.environment.get(\"company-id\");\r",
+									"\r",
+									"if(!companyId) {\r",
+									"    postman.setEnvironmentVariable(\"company-id\", JSON.stringify(\"\"));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{auth-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": {{company-id}},\r\n    \"name\": \"flameflame\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/company/updateCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"updateCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/company/deleteCompany",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "11b4ba99-2962-4dda-83eb-f0bd35cf014c",
+								"exec": [
+									"var companyId = pm.environment.get(\"company-id\");\r",
+									"\r",
+									"if(!companyId) {\r",
+									"    postman.setEnvironmentVariable(\"company-id\", JSON.stringify(\"\"));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "auth-token",
+								"value": "{{auth-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": {{company-id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/company/deleteCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company",
+								"deleteCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

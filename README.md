@@ -13,3 +13,9 @@
 ### Run the container
 
 `sudo docker-compose up`
+
+## Testing the endpoints with postman
+
+- Import collection: 'Companies Api.postman_collection.json'
+- Import enviorement: 'companies-api.postman_environment.json'
+- I highly recommend testing the endpoints in order
