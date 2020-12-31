@@ -13,7 +13,9 @@ const runServer = async () => {
     .then(async (connectionMessage) => {
       // Succesful connection to database
       console.log(connectionMessage);
-      await companySeeder();
+
+      const recordsNumber = Math.floor(Math.random() * 30 + 1);
+      await companySeeder(recordsNumber);
 
       app.listen(PORT, () => {
         console.log(`[server] Running at port ${PORT}`);

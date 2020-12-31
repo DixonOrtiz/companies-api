@@ -1,20 +1,32 @@
-const mongoose = require('mongoose');
-const { connect } = require('../helpers/mongo-connection');
-const { companies } = require('./company-data.js');
 const Company = require('../model/company');
-const companyName = 'company1';
+const faker = require('faker');
 
-const companySeeder = async () => {
-  // Check if database is already sedded
-  const isSeeded = await Company.exists({ name: companyName });
-  if (!isSeeded) {
-    try {
-      await Company.insertMany(companies).then(() =>
-        console.log('Data inserted!')
-      );
-    } catch (error) {
-      console.error('Error while seeding data');
-    }
+const generateArray = (recordsNumber) => {
+  const array = [];
+  for (let i = 0; i < recordsNumber; i++) {
+    array.push(
+      new Company({
+        name: faker.name.firstName(),
+        address: faker.address.streetAddress(),
+        email: faker.internet.email(),
+        phone: faker.phone.phoneNumber(),
+      })
+    );
+  }
+
+  return array;
+};
+
+const companySeeder = async (recordsNumber) => {
+  try {
+    await Company.deleteMany({});
+
+    const companies = generateArray(recordsNumber);
+    await Company.insertMany(companies).then(() =>
+      console.log(`Data inserted, ${recordsNumber} registers has been created!`)
+    );
+  } catch (error) {
+    console.error('Error while seeding data', error);
   }
 };
 
